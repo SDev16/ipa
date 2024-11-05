@@ -32,7 +32,7 @@ jobs:
           # The `--no-codesign` flag prevents the need for signing the app. Remove if you plan to sign it.
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated version
         with:
           name: ios-build
           path: build/ios/iphoneos/Runner.app
