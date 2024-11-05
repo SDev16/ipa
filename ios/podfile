@@ -1,2 +1,36 @@
+platform :ios, '12.0'
 
-platform :ios, '17.0'
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+flutter_root = File.expand_path('..', __dir__)
+eval(File.read(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')))
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # Firebase dependencies
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
+
+  # Google Sign-In
+  pod 'GoogleSignIn'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'NO'
+    end
+  end
+end
