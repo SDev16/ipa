@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "794904943161",
+    "project_id": "foodm-a3a2d",
+    "storage_bucket": "foodm-a3a2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794904943161:android:358afe6e8a2e042d338be8",
+        "android_client_info": {
+          "package_name": "com.second.faap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2pPFZaWsc5zSMUK1lbEOF8ixyCjlEBs0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
