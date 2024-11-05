@@ -1,4 +1,4 @@
-name: Build Flutter iOS APK
+name: Build Flutter iOS App
 
 on:
   push:
@@ -10,39 +10,59 @@ on:
 
 jobs:
   build:
-    name: Build Flutter iOS APK
-    runs-on: macos-latest  # This ensures the job runs on macOS
+    name: Build Flutter iOS App
+    runs-on: macos-latest  # Ensure the job runs on macOS
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Step 2: Set up Flutter environment
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.3'  # You can specify a specific Flutter version here
+          flutter-version: '3.24.3'  # Specify the Flutter version
 
+      # Step 3: Cache Flutter dependencies
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-flutter-pub-cache-${{ hashFiles('**/pubspec.yaml') }}
+
+      # Step 4: Install CocoaPods
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
 
+      # Step 5: Cache CocoaPods dependencies
+      - name: Cache CocoaPods dependencies
+        uses: actions/cache@v3
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-cocoapods-${{ hashFiles('ios/Podfile.lock') }}
+
+      # Step 6: Update CocoaPods repositories
       - name: Update CocoaPods Repositories
-        run: |
-          pod repo update
+        run: pod repo update
 
+      # Step 7: Install Flutter dependencies
       - name: Install dependencies
-        run: |
-          flutter pub get
+        run: flutter pub get
 
-      - name: Install iOS Dependencies
+      # Step 8: Install iOS dependencies (CocoaPods)
+      - name: Install iOS dependencies
         run: |
           cd ios
           pod install
 
-      - name: Build Flutter iOS APK
+      # Step 9: Build iOS app
+      - name: Build Flutter iOS app
         run: |
           flutter build ios --release --no-codesign
 
+      # Step 10: Upload build artifacts (iOS .app file)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
