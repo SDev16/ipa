@@ -1,55 +1,39 @@
-name: iOS-ipa-build
+name: Flutter iOS Build
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # or your preferred branch
+  pull_request:
+    branches:
+      - main  # or your preferred branch
 
 jobs:
-  build-ios:
-    name: 🎉 iOS Build
-    runs-on: macos-latest
+  build:
+    runs-on: macos-latest  # Use macOS to build iOS apps
+
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Set up Flutter
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          architecture: x64
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: '11'
 
-      # Clean Flutter build artifacts
-      - run: flutter clean
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'  # You can specify a specific version if needed
 
-      # Install Flutter dependencies
-      - run: flutter pub get
+    - name: Run flutter pub get
+      run: flutter pub get
 
-      # Install CocoaPods dependencies for iOS
-      - name: Install CocoaPods dependencies
-        run: pod install --repo-update
-        working-directory: ios
+    - name: Build iOS
+      run: |
+        flutter build ios --release --no-codesign
 
-      # Build the iOS app in release mode without code signing
-      - name: Build iOS app
-        run: flutter build ios --release --no-codesign
-
-      # Prepare the .ipa packaging
-      - name: Create Payload directory
-        run: mkdir -p build/ios/iphoneos/Payload
-
-      - name: Move Runner.app to Payload
-        run: mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/
-
-      # Create .ipa file from Payload directory
-      - name: Zip output as .ipa
-        run: |
-          cd build/ios/iphoneos
-          zip -qq -r -9 FlutterIpaExport.ipa Payload
-
-      # Upload the .ipa as a release asset
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
-          tag: v1.0
-          overwrite: true
-          body: "This is the first release"
+    - name: Archive iOS Build
+      run: |
+        cd build/ios/iphoneos
+        zip -r iOSApp.zip Runner.app
