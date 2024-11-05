@@ -1,4 +1,4 @@
-platform :ios, '15.0'
+platform :ios, '16.0'
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
@@ -17,11 +17,11 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  # Firebase dependencies (updated versions)
-  pod 'Firebase/Core', '~> 3.6.0'
-  pod 'Firebase/Auth', '~> 5.3.1'
-  pod 'Firebase/Firestore', '~> 5.4.4'
-  pod 'Firebase/Storage', '~> 12.3.4'
+  # Firebase dependencies without version constraints
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
 
   # Google Sign-In
   pod 'GoogleSignIn'
