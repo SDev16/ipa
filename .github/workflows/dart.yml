@@ -31,19 +31,18 @@ jobs:
           path: ~/.pub-cache
           key: ${{ runner.os }}-flutter-pub-cache-${{ hashFiles('**/pubspec.yaml') }}
 
-      # Step 4: Install CocoaPods
+      # Step 4: Install CocoaPods (if not already installed)
       - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods
+        run: gem install cocoapods
 
-      # Step 5: Cache CocoaPods dependencies
+      # Step 5: Cache CocoaPods dependencies to speed up builds
       - name: Cache CocoaPods dependencies
         uses: actions/cache@v3
         with:
           path: ios/Pods
           key: ${{ runner.os }}-cocoapods-${{ hashFiles('ios/Podfile.lock') }}
 
-      # Step 6: Update CocoaPods repositories
+      # Step 6: Update CocoaPods repositories (necessary if pods need to be updated)
       - name: Update CocoaPods Repositories
         run: pod repo update
 
@@ -51,18 +50,21 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Step 8: Install iOS dependencies (CocoaPods)
+      # Step 8: Install iOS dependencies (CocoaPods) and resolve any issues
       - name: Install iOS dependencies
         run: |
           cd ios
           pod install
 
-      # Step 9: Build iOS app
-      - name: Build Flutter iOS app
-        run: |
-          flutter build ios --release --no-codesign
+      # Step 9: Clean Flutter build (optional but recommended for CI)
+      - name: Clean Flutter build
+        run: flutter clean
 
-      # Step 10: Upload build artifacts (iOS .app file)
+      # Step 10: Build the iOS app for release (no code signing required for CI)
+      - name: Build Flutter iOS app
+        run: flutter build ios --release --no-codesign
+
+      # Step 11: Upload build artifacts (iOS .app file)
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
