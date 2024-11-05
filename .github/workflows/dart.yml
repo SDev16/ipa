@@ -3,10 +3,10 @@ name: Flutter iOS Build
 on:
   push:
     branches:
-      - main # Change this to your main branch name
+      - main # Change this if your main branch has a different name
   pull_request:
     branches:
-      - main # Change this to your main branch name
+      - main # Change this if your main branch has a different name
 
 jobs:
   build:
@@ -19,22 +19,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0' # Specify the Flutter version you want to use
+          flutter-version: '3.13.0' # Adjust this to your desired Flutter version
 
       - name: Install Dependencies
-        run: |
-          flutter pub get
-          
-      - name: Build iOS
-        run: |
-          flutter build ios --release
-          
-      - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: ios-build
-          path: build/ios/iphoneos/*.app # Adjust path based on your project structure
+        run: flutter pub get
 
-      - name: Clean Up
-        run: |
-          flutter clean
+      - name: Build iOS
+        run: flutter build ios --release
+
