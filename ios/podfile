@@ -1,4 +1,4 @@
-platform :ios, '14.0'
+platform :ios, '12.0'
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
@@ -8,7 +8,6 @@ project 'Runner', {
   'Release' => :release,
 }
 
-# Set up Flutter root path for CI environments
 flutter_root = ENV['FLUTTER_ROOT'] || File.expand_path('..', __dir__)
 eval(File.read(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')))
 
@@ -17,6 +16,10 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # Ensure these are in place to link necessary Flutter libraries
+  pod 'Flutter', :path => '../..'  # Adjust if necessary
+  pod 'FlutterPluginRegistrant', :path => '../..'
 
   # Firebase dependencies
   pod 'Firebase/Core'
