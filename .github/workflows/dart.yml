@@ -1,34 +1,38 @@
-name: Flutter iOS Build
+name: Build Flutter iOS APK
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
-    runs-on: macos-latest
+    name: Build Flutter iOS APK
+    runs-on: macos-latest  # This ensures the job runs on macOS
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.7.0'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'  # You can specify a specific Flutter version here
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: |
+          flutter pub get
 
-    - name: Build iOS
-      run: flutter build ios --release --no-codesign
+      - name: Build Flutter iOS APK
+        run: |
+          flutter build ios --release --no-codesign
+          # The `--no-codesign` flag prevents the need for signing the app. Remove if you plan to sign it.
 
-    - name: Archive the build
-      run: ls build/ios/iphoneos # List the files to see if the build was successful
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3  # Updated to v3
-      with:
-        name: ios-build
-        path: build/ios/iphoneos/*.app
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ios-build
+          path: build/ios/iphoneos/Runner.app
