@@ -10,28 +10,38 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Set up Flutter
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
-      - run: flutter pub get
-      
 
-      - run: pod repo update
+      # Install Flutter dependencies
+      - run: flutter pub get
+
+      # Install CocoaPods dependencies for iOS
+      - name: Install CocoaPods dependencies
+        run: pod install --repo-update
         working-directory: ios
 
-      - run: flutter build ios --release --no-codesign
+      # Build the iOS app in release mode without code signing
+      - name: Build iOS app
+        run: flutter build ios --release --no-codesign
 
-      - run: mkdir Payload
-        working-directory: build/ios/iphoneos
+      # Prepare the .ipa packaging
+      - name: Create Payload directory
+        run: mkdir -p build/ios/iphoneos/Payload
 
-      - run: mv Runner.app/ Payload
-        working-directory: build/ios/iphoneos
+      - name: Move Runner.app to Payload
+        run: mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/
 
-      - name: Zip output
-        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
+      # Create .ipa file from Payload directory
+      - name: Zip output as .ipa
+        run: |
+          cd build/ios/iphoneos
+          zip -qq -r -9 FlutterIpaExport.ipa Payload
 
+      # Upload the .ipa as a release asset
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -39,4 +49,4 @@ jobs:
           file: build/ios/iphoneos/FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is first release"
+          body: "This is the first release"
