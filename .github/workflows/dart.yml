@@ -22,17 +22,29 @@ jobs:
         with:
           flutter-version: '3.24.3'  # You can specify a specific Flutter version here
 
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+
+      - name: Update CocoaPods Repositories
+        run: |
+          pod repo update
+
       - name: Install dependencies
         run: |
           flutter pub get
 
+      - name: Install iOS Dependencies
+        run: |
+          cd ios
+          pod install
+
       - name: Build Flutter iOS APK
         run: |
           flutter build ios --release --no-codesign
-          # The `--no-codesign` flag prevents the need for signing the app. Remove if you plan to sign it.
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3  # Updated version
+        uses: actions/upload-artifact@v3
         with:
           name: ios-build
           path: build/ios/iphoneos/Runner.app
