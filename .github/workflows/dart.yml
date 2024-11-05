@@ -28,7 +28,7 @@ jobs:
       run: ls build/ios/iphoneos # List the files to see if the build was successful
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3  # Updated to v3
       with:
         name: ios-build
         path: build/ios/iphoneos/*.app
