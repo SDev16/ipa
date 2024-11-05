@@ -1,12 +1,7 @@
 PODS:
-  - Firebase/Analytics (10.10.0):
-    - Firebase/Core
-    - FirebaseAnalytics (~> 10.10.0)
   - Firebase/Auth (10.10.0):
     - Firebase/Core
     - FirebaseAuth (~> 10.10.0)
-  - Firebase/Core (10.10.0):
-    - FirebaseAnalytics (~> 10.10.0)
   - Firebase/Storage (10.10.0):
     - Firebase/Core
     - FirebaseStorage (~> 10.10.0)
@@ -24,7 +19,6 @@ PODS:
     - GTMSessionFetcher/Core (~> 1.5)
 
 DEPENDENCIES:
-  - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Storage
@@ -32,7 +26,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Firebase
-    - FirebaseAnalytics
     - FirebaseAuth
     - FirebaseCore
     - FirebaseInstallations
@@ -41,7 +34,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Firebase: <checksum>
-  FirebaseAnalytics: <checksum>
   FirebaseAuth: <checksum>
   FirebaseCore: <checksum>
   FirebaseInstallations: <checksum>
