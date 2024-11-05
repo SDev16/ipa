@@ -8,7 +8,8 @@ project 'Runner', {
   'Release' => :release,
 }
 
-flutter_root = File.expand_path('..', __dir__)
+# Set up Flutter root path for CI environments
+flutter_root = ENV['FLUTTER_ROOT'] || File.expand_path('..', __dir__)
 eval(File.read(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')))
 
 target 'Runner' do
