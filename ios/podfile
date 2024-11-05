@@ -17,10 +17,6 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  # Ensure these are in place to link necessary Flutter libraries
-  pod 'Flutter', :path => '../..'  # Adjust if necessary
-  pod 'FlutterPluginRegistrant', :path => '../..'
-
   # Firebase dependencies
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
