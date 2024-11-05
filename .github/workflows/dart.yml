@@ -24,14 +24,19 @@ jobs:
     - name: Install Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 'stable'  # You can specify a specific version if needed
+        flutter-version: '3.7.0'  # Specify a stable version here
+
+    - name: Run flutter doctor
+      run: flutter doctor
 
     - name: Run flutter pub get
       run: flutter pub get
 
+    - name: Switch to stable channel
+      run: flutter channel stable
+
     - name: Build iOS
-      run: |
-        flutter build ios --release --no-codesign
+      run: flutter build ios --release --no-codesign
 
     - name: Archive iOS Build
       run: |
