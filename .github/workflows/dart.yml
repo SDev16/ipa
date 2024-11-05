@@ -16,6 +16,9 @@ jobs:
           channel: 'stable'
           architecture: x64
 
+      # Clean Flutter build artifacts
+      - run: flutter clean
+
       # Install Flutter dependencies
       - run: flutter pub get
 
