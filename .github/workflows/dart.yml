@@ -16,25 +16,19 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.7.0' # Change this to the desired Flutter version
+        flutter-version: '3.7.0'
 
     - name: Install dependencies
       run: flutter pub get
 
     - name: Build iOS
-      run: |
-        flutter build ios --release --no-codesign
-      env:
-        FLUTTER_ROOT: ${{ steps.flutter.outputs.flutter-root }}
+      run: flutter build ios --release --no-codesign
 
     - name: Archive the build
-      run: |
-        mkdir -p $GITHUB_ENV
-        echo "BUILD_DIR=build/ios/iphoneos" >> $GITHUB_ENV
-        ls $BUILD_DIR # Optional: List files in the build directory for debugging
+      run: ls build/ios/iphoneos # List the files to see if the build was successful
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ios-build
-        path: build/ios/iphoneos/*.app # Adjust the path according to your build output
+        path: build/ios/iphoneos/*.app
